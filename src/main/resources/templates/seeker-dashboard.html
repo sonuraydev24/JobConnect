@@ -5,9 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Job Seeker Dashboard | JobConnect</title>
-
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -19,21 +17,12 @@
 
     <section class="hero">
         <span class="pill">JOB SEEKER DASHBOARD</span>
-
-        <h1>
-            Welcome,
-            <span th:text="${user.fullName}">Candidate</span>!
-        </h1>
-
+        <h1>Welcome, <span th:text="${user.fullName}">Candidate</span>!</h1>
         <p>Find opportunities and manage your job applications.</p>
-
-        <a href="/seeker/profile" class="btn">
-            My Profile
-        </a>
+        <a href="/seeker/profile" class="btn">My Profile</a>
     </section>
 
     <section class="grid">
-
         <div class="card">
             <h3>Total Applications</h3>
             <h1 th:text="${#lists.size(applications)}">0</h1>
@@ -43,61 +32,32 @@
             <h3>Available Jobs</h3>
             <h1 th:text="${#lists.size(jobs)}">0</h1>
         </div>
-
     </section>
 
     <h2>Available Jobs</h2>
 
     <div class="grid">
-
         <article class="card" th:each="job : ${jobs}">
-
             <h3 th:text="${job.title}">Job Title</h3>
+            <p>Company: <strong th:text="${job.company}"></strong></p>
+            <p>Location: <span th:text="${job.location}"></span></p>
+            <p>Job Type: <span th:text="${job.jobType}"></span></p>
+            <p>Salary: <span th:text="${job.salary}"></span></p>
 
-            <p>
-                Company:
-                <strong th:text="${job.company}"></strong>
-            </p>
-
-            <p>
-                Location:
-                <span th:text="${job.location}"></span>
-            </p>
-
-            <p>
-                Job Type:
-                <span th:text="${job.jobType}"></span>
-            </p>
-
-            <p>
-                Salary:
-                <span th:text="${job.salary}"></span>
-            </p>
-
-            <a th:href="@{/jobs/{id}(id=${job.id})}"
-               class="btn">
+            <a th:href="@{/jobs/{id}(id=${job.id})}" class="btn">
                 View Details
             </a>
 
-            <form th:action="@{/seeker/jobs/{id}/apply(id=${job.id})}"
-                  method="post">
-
-                <button type="submit" class="btn">
-                    Apply Now
-                </button>
-
+            <form th:action="@{/seeker/jobs/{id}/apply(id=${job.id})}" method="post">
+                <button type="submit" class="btn">Apply Now</button>
             </form>
-
         </article>
-
     </div>
 
     <h2>My Applications</h2>
 
     <div class="tablewrap">
-
         <table>
-
             <thead>
                 <tr>
                     <th>Job Title</th>
@@ -108,36 +68,22 @@
             </thead>
 
             <tbody>
-
-                <tr th:each="application : ${applications}">
-
-                    <td th:text="${application.job.title}"></td>
-
-                    <td th:text="${application.job.company}"></td>
-
-                    <td th:text="${#temporals.format(application.appliedAt, 'dd-MM-yyyy')}"></td>
-
+                <tr th:each="appItem : ${applications}">
+                    <td th:text="${appItem.job.title}"></td>
+                    <td th:text="${appItem.job.company}"></td>
+                    <td th:text="${#temporals.format(appItem.appliedAt, 'dd-MM-yyyy')}"></td>
                     <td>
-                        <span class="pill"
-                              th:text="${application.status}">
-                        </span>
+                        <span class="pill" th:text="${appItem.status}"></span>
                     </td>
-
                 </tr>
 
                 <tr th:if="${#lists.isEmpty(applications)}">
-                    <td colspan="4">
-                        You haven't applied for any jobs yet.
-                    </td>
+                    <td colspan="4">You haven't applied for any jobs yet.</td>
                 </tr>
-
             </tbody>
-
         </table>
-
     </div>
 
 </main>
-
 </body>
 </html>
