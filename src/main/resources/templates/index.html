@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>JobConnect - Find Your Dream Job</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<div th:replace="~{fragments :: nav}"></div>
+
+<!-- HERO SECTION -->
+
+<header class="hero">
+
+    <span class="pill">YOUR CAREER, CONNECTED</span>
+
+    <h1>
+        Find a job that moves<br>
+        <em>you forward.</em>
+    </h1>
+
+    <p>Explore opportunities and connect with employers.</p>
+
+    <a class="btn" href="/register">Get Started</a>
+
+</header>
+
+<main class="wrap">
+
+    <!-- JOB SEARCH SECTION -->
+
+    <section class="card">
+
+        <h2>Find Your Dream Job</h2>
+
+        <p>Filter jobs according to your preferences.</p>
+
+        <form action="/jobs/search" method="get">
+
+            <label>Keyword</label>
+
+            <input type="text"
+                   name="keyword"
+                   placeholder="Job title, company or skills">
+
+            <label>Location</label>
+
+            <input type="text"
+                   name="location"
+                   placeholder="Mumbai, Pune, Thane...">
+
+            <label>Job Type</label>
+
+            <select name="jobType">
+
+                <option value="">All Job Types</option>
+                <option value="Full Time">Full Time</option>
+                <option value="Part Time">Part Time</option>
+                <option value="Internship">Internship</option>
+                <option value="Contract">Contract</option>
+
+            </select>
+
+            <label>Experience</label>
+
+            <select name="experience">
+
+                <option value="">All Experience</option>
+                <option value="Fresher">Fresher</option>
+                <option value="1-2 Years">1-2 Years</option>
+                <option value="2-3 Years">2-3 Years</option>
+                <option value="3-5 Years">3-5 Years</option>
+
+            </select>
+
+            <!-- SALARY FILTER -->
+
+            <h3>Salary Range (Per Month)</h3>
+
+            <label>Minimum Salary</label>
+
+            <select name="minSalary">
+
+                <option value="">Any Minimum</option>
+                <option value="10000">₹10,000</option>
+                <option value="15000">₹15,000</option>
+                <option value="20000">₹20,000</option>
+                <option value="30000">₹30,000</option>
+                <option value="50000">₹50,000</option>
+                <option value="100000">₹1,00,000</option>
+
+            </select>
+
+            <label>Maximum Salary</label>
+
+            <select name="maxSalary">
+
+                <option value="">Any Maximum</option>
+                <option value="20000">₹20,000</option>
+                <option value="30000">₹30,000</option>
+                <option value="50000">₹50,000</option>
+                <option value="75000">₹75,000</option>
+                <option value="100000">₹1,00,000</option>
+                <option value="200000">₹2,00,000</option>
+
+            </select>
+
+            <br><br>
+
+            <button type="submit" class="btn">
+                Search Jobs
+            </button>
+
+            <a href="/" class="btn">
+                Reset Filters
+            </a>
+
+        </form>
+
+    </section>
+
+    <!-- JOB LISTING -->
+
+    <h2>Latest Opportunities</h2>
+
+    <div class="grid">
+
+        <article class="card" th:each="j : ${jobs}">
+
+            <span class="pill" th:text="${j.jobType}"></span>
+
+            <h3 th:text="${j.title}"></h3>
+
+            <b th:text="${j.company}"></b>
+
+            <p th:text="${j.location + ' · ' + j.experience}"></p>
+
+            <p class="salary" th:text="${j.salary}"></p>
+
+            <a th:href="@{/jobs/{id}(id=${j.id})}">
+                View Details →
+            </a>
+
+        </article>
+
+    </div>
+
+    <p th:if="${#lists.isEmpty(jobs)}">
+        No jobs found. Try changing your search filters.
+    </p>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+
+target/
+data/
+uploads/
+.env
+.env.*
+!.env.example
+*.log
+.idea/
+.vscode/

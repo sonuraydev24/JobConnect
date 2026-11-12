@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | JobConnect</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<div th:replace="~{fragments :: nav}"></div>
+
+<main class="wrap">
+
+    <section class="hero">
+        <span class="pill">ADMIN CONTROL PANEL</span>
+        <h1>Welcome to JobConnect Admin</h1>
+        <p>Monitor users, recruiters and job portal activities.</p>
+    </section>
+
+    <!-- STATISTICS -->
+
+    <section class="grid">
+
+        <div class="card">
+            <h3>Total Users</h3>
+            <h1 th:text="${userCount}">0</h1>
+        </div>
+
+        <div class="card">
+            <h3>Total Jobs</h3>
+            <h1 th:text="${jobCount}">0</h1>
+        </div>
+
+        <div class="card">
+            <h3>Total Applications</h3>
+            <h1 th:text="${appCount}">0</h1>
+        </div>
+
+        <div class="card">
+            <h3>Recruiters</h3>
+            <h1 th:text="${#lists.size(users.?[role.name() == 'ROLE_RECRUITER'])}">0</h1>
+        </div>
+
+        <div class="card">
+            <h3>Job Seekers</h3>
+            <h1 th:text="${#lists.size(users.?[role.name() == 'ROLE_JOB_SEEKER'])}">0</h1>
+        </div>
+
+    </section>
+
+    <!-- USER MANAGEMENT -->
+
+    <h2>User Management</h2>
+
+    <div class="tablewrap">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Verification</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr th:each="user : ${users}">
+
+                    <td th:text="${user.id}"></td>
+
+                    <td th:text="${user.fullName}"></td>
+
+                    <td th:text="${user.email}"></td>
+
+                    <td th:text="${user.phone}"></td>
+
+                    <td th:text="${user.role}"></td>
+
+                    <td>
+                        <span class="pill"
+                              th:text="${user.enabled ? 'Active' : 'Disabled'}">
+                        </span>
+                    </td>
+
+                    <td>
+
+                        <span th:if="${user.role.name() == 'ROLE_RECRUITER'}"
+                              th:text="${user.verified ? 'Verified' : 'Pending'}">
+                        </span>
+
+                        <span th:unless="${user.role.name() == 'ROLE_RECRUITER'}">
+                            Not Applicable
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <div th:if="${user.role.name() == 'ROLE_RECRUITER'}">
+
+                            <form th:if="${!user.verified}"
+                                  th:action="@{/admin/recruiters/{id}/verify(id=${user.id})}"
+                                  method="post">
+
+                                <button type="submit" class="btn small">
+                                    Verify
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                        <form th:if="${user.role.name() != 'ROLE_ADMIN'}"
+                              th:action="@{/admin/users/{id}/toggle(id=${user.id})}"
+                              method="post">
+
+                            <button type="submit" class="btn small">
+                                <span th:text="${user.enabled ? 'Disable' : 'Enable'}">
+                                    Disable
+                                </span>
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</main>
+
+</body>
+</html>

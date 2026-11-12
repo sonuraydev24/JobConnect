@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | JobConnect</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div th:replace="~{fragments :: nav}"></div>
+
+<main class="formwrap">
+    <section class="form">
+
+        <span class="pill">JOIN JOBCONNECT</span>
+
+        <h1>Create Your Account</h1>
+        <p>Connect with opportunities and grow your career.</p>
+
+        <p class="error"
+           th:if="${error}"
+           th:text="${error}">
+        </p>
+
+        <form method="post" th:action="@{/register}">
+
+            <label>Full Name</label>
+            <input type="text"
+                   name="fullName"
+                   placeholder="Enter your full name"
+                   required>
+
+            <label>Email Address</label>
+            <input type="email"
+                   name="email"
+                   placeholder="Enter your email"
+                   required>
+
+            <label>Mobile Number</label>
+            <input type="tel"
+                   name="phone"
+                   placeholder="10-digit mobile number"
+                   pattern="[0-9]{10}"
+                   maxlength="10"
+                   required>
+
+            <label>Gender</label>
+            <select name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+            </select>
+
+            <label>Highest Qualification</label>
+            <input type="text"
+                   name="qualification"
+                   placeholder="Example: BCA, MCA, B.Sc">
+
+            <label>Password</label>
+            <input type="password"
+                   name="password"
+                   placeholder="Minimum 8 characters"
+                   minlength="8"
+                   maxlength="72"
+                   required>
+
+            <label>Register As</label>
+            <select name="role" required>
+                <option value="">Select Account Type</option>
+                <option value="JOB_SEEKER">Job Seeker</option>
+                <option value="RECRUITER">Recruiter / Employer</option>
+            </select>
+
+            <button type="submit" class="btn">
+                Create Account
+            </button>
+
+        </form>
+
+        <p>
+            Already registered?
+            <a href="/login">Sign In</a>
+        </p>
+
+    </section>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicants | JobConnect</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<div th:replace="~{fragments :: nav}"></div>
+
+<main class="wrap">
+
+    <h1>Candidate Applications</h1>
+    <p>Manage and review candidates who applied for your jobs.</p>
+
+    <div class="tablewrap">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Candidate</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>Qualification</th>
+                    <th>Job</th>
+                    <th>Applied Date</th>
+                    <th>Current Status</th>
+                    <th>Update Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr th:each="a : ${applications}">
+
+                    <td th:text="${a.applicant.fullName}"></td>
+
+                    <td th:text="${a.applicant.email}"></td>
+
+                    <td th:text="${a.applicant.phone != null ? a.applicant.phone : 'Not provided'}"></td>
+
+                    <td th:text="${a.applicant.qualification != null ? a.applicant.qualification : 'Not provided'}"></td>
+
+                    <td th:text="${a.job.title}"></td>
+
+                    <td th:text="${#temporals.format(a.appliedAt, 'dd-MM-yyyy')}"></td>
+
+                    <td>
+                        <span class="pill"
+                              th:text="${a.status}">
+                        </span>
+                    </td>
+
+                    <td>
+                        <form
+                            th:action="@{/recruiter/applications/{id}/status(id=${a.id})}"
+                            method="post">
+
+                            <select name="status" required>
+
+                                <option
+                                    th:each="s : ${T(com.jobconnect.model.Status).values()}"
+                                    th:value="${s}"
+                                    th:text="${s}"
+                                    th:selected="${s == a.status}">
+                                </option>
+
+                            </select>
+
+                            <button type="submit" class="btn small">
+                                Update
+                            </button>
+
+                        </form>
+                    </td>
+
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(applications)}">
+                    <td colspan="8">
+                        No applications received yet.
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+
+    <br>
+
+    <a href="/recruiter/dashboard" class="btn">
+        Back to Dashboard
+    </a>
+
+</main>
+
+</body>
+</html>

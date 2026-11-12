@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Recruiter Dashboard | JobConnect</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<div th:replace="~{fragments :: nav}"></div>
+
+<main class="wrap">
+
+    <!-- HEADER -->
+
+    <section class="hero">
+
+        <span class="pill">RECRUITER DASHBOARD</span>
+
+        <h1>Welcome, Recruiter!</h1>
+
+        <p>Manage your job postings and find the right candidates.</p>
+
+        <a href="/recruiter/jobs/new" class="btn">
+            + Post New Job
+        </a>
+
+        <a href="/recruiter/applicants" class="btn">
+            View Applicants
+        </a>
+
+    </section>
+
+    <!-- STATISTICS -->
+
+    <section class="grid">
+
+        <div class="card">
+            <h3>My Posted Jobs</h3>
+            <h1 th:text="${#lists.size(jobs)}">0</h1>
+        </div>
+
+        <div class="card">
+            <h3>Total Applications</h3>
+            <h1 th:text="${appCount}">0</h1>
+        </div>
+
+    </section>
+
+    <!-- JOB MANAGEMENT -->
+
+    <h2>My Job Postings</h2>
+
+    <div class="grid">
+
+        <article class="card" th:each="job : ${jobs}">
+
+            <h3 th:text="${job.title}">Job Title</h3>
+
+            <p>
+                Company:
+                <strong th:text="${job.company}"></strong>
+            </p>
+
+            <p>
+                Location:
+                <span th:text="${job.location}"></span>
+            </p>
+
+            <p>
+                Job Type:
+                <span th:text="${job.jobType}"></span>
+            </p>
+
+            <p>
+                Salary:
+                <span th:text="${job.salary}"></span>
+            </p>
+
+            <p>
+                Status:
+                <span class="pill"
+                      th:text="${job.active ? 'Active' : 'Closed'}">
+                </span>
+            </p>
+
+            <form th:action="@{/recruiter/jobs/{id}/toggle(id=${job.id})}"
+                  method="post">
+
+                <button type="submit" class="btn small">
+
+                    <span th:text="${job.active ? 'Close Job' : 'Reopen Job'}">
+                        Close Job
+                    </span>
+
+                </button>
+
+            </form>
+
+        </article>
+
+        <div class="card" th:if="${#lists.isEmpty(jobs)}">
+            <h3>No Jobs Posted Yet</h3>
+            <p>Start by posting your first job opening.</p>
+
+            <a href="/recruiter/jobs/new" class="btn">
+                Post Your First Job
+            </a>
+        </div>
+
+    </div>
+
+    <br>
+
+    <a href="/recruiter/applicants" class="btn">
+        Manage All Applicants
+    </a>
+
+</main>
+
+</body>
+</html>
